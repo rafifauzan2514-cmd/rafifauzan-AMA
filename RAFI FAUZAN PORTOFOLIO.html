@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rafi Fauzan — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #111118; --card: #16161f;
+    --accent: #6c63ff; --accent2: #ff6584; --accent3: #43e97b;
+    --text: #e8e8f0; --muted: #7a7a9a;
+    --border: rgba(108,99,255,0.15); --glow: rgba(108,99,255,0.25);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
+
+  .cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.15s cubic-bezier(0.34,1.56,0.64,1),background 0.3s;mix-blend-mode:screen}
+  .cursor-ring{position:fixed;width:40px;height:40px;border:1px solid rgba(108,99,255,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.4s,height 0.4s,border-color 0.3s}
+
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.35}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(10,10,15,0.75);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+  .nav-logo{font-family:'Bree Serif',serif;font-size:1.4rem;color:var(--text)}
+  .nav-logo span{color:var(--accent)}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{font-size:0.82rem;font-weight:500;color:var(--muted);text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.3s;position:relative}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width 0.3s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a:hover::after{width:100%}
+
+  section{position:relative;z-index:1}
+
+  /* HERO */
+  #beranda{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:8rem 4rem 6rem;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 60% 40%,rgba(108,99,255,0.13) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 20% 80%,rgba(255,101,132,0.07) 0%,transparent 50%),radial-gradient(ellipse 60% 50% at 80% 10%,rgba(67,233,123,0.05) 0%,transparent 50%)}
+  .orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;animation:floatOrb 9s ease-in-out infinite}
+  .orb-1{width:420px;height:420px;background:rgba(108,99,255,0.11);top:8%;right:3%}
+  .orb-2{width:320px;height:320px;background:rgba(255,101,132,0.07);bottom:15%;left:3%;animation-delay:3.5s}
+  .orb-3{width:220px;height:220px;background:rgba(67,233,123,0.06);top:55%;right:28%;animation-delay:6s}
+  @keyframes floatOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-35px) scale(1.06)}}
+
+  .hero-content{position:relative;z-index:1;max-width:900px;text-align:center}
+  .hero-tag{display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 1.1rem;border-radius:100px;border:1px solid var(--border);background:rgba(108,99,255,0.08);font-size:0.76rem;font-weight:500;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:elegantIn 1s cubic-bezier(0.16,1,0.3,1) 0.1s forwards}
+  .hero-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--accent3);animation:pulse 2.5s ease infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.6)}}
+
+  .hero-name{font-family:'Bree Serif',serif;font-size:clamp(3.8rem,9vw,7.5rem);line-height:1}
+  .hero-name .line-1{display:block;color:var(--text);opacity:0;animation:elegantIn 1s cubic-bezier(0.16,1,0.3,1) 0.25s forwards}
+  .hero-name .line-2{display:block;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;animation:elegantIn 1s cubic-bezier(0.16,1,0.3,1) 0.4s forwards}
+  .hero-sub{margin-top:1.6rem;font-size:clamp(1rem,1.8vw,1.15rem);color:var(--muted);font-weight:300;line-height:1.8;max-width:540px;margin-inline:auto;opacity:0;animation:elegantIn 1s cubic-bezier(0.16,1,0.3,1) 0.55s forwards}
+  .hero-cta{margin-top:3rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:elegantIn 1s cubic-bezier(0.16,1,0.3,1) 0.7s forwards}
+
+  @keyframes elegantIn{from{opacity:0;transform:translateY(28px) scale(0.97);filter:blur(4px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+
+  .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.9rem 2.2rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;cursor:pointer;text-decoration:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);border:none}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 0 35px rgba(108,99,255,0.4)}
+  .btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 0 55px rgba(108,99,255,0.65)}
+  .btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+
+  .scroll-ind{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--muted);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;opacity:0;animation:elegantIn 1s ease 1.2s forwards}
+  .scroll-ind .line{width:1px;height:50px;background:linear-gradient(to bottom,var(--accent),transparent);animation:scrollLine 2.2s ease infinite}
+  @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* SECTIONS */
+  .section-wrap{padding:7rem 4rem;max-width:1100px;margin:0 auto}
+  .section-label{display:inline-flex;align-items:center;gap:0.8rem;font-size:0.73rem;font-weight:500;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem}
+  .section-label::before{content:'';display:block;width:28px;height:1px;background:var(--accent)}
+  .section-title{font-family:'Bree Serif',serif;font-size:clamp(2rem,4vw,2.8rem);letter-spacing:-0.01em;line-height:1.1;margin-bottom:1rem}
+  .section-desc{color:var(--muted);font-size:1rem;line-height:1.8;max-width:540px}
+
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(36px) scale(0.98);filter:blur(3px);transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1),filter 0.8s cubic-bezier(0.16,1,0.3,1)}
+  .reveal.visible{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+  .reveal-delay-1{transition-delay:0.12s}
+  .reveal-delay-2{transition-delay:0.24s}
+  .reveal-delay-3{transition-delay:0.36s}
+
+  /* DATA DIRI */
+  #data-diri{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3rem}
+  .about-avatar-wrap{display:flex;justify-content:center}
+  .avatar-frame{width:270px;height:270px;border-radius:30px;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:3px;animation:glowPulse 5s ease-in-out infinite}
+  @keyframes glowPulse{0%,100%{box-shadow:0 0 30px rgba(108,99,255,0.35)}50%{box-shadow:0 0 70px rgba(255,101,132,0.35)}}
+  .avatar-inner{width:100%;height:100%;background:var(--card);border-radius:27px;display:flex;align-items:center;justify-content:center;font-size:7rem}
+  .info-list{display:flex;flex-direction:column;gap:0.7rem;margin-top:1.5rem}
+  .info-item{display:flex;align-items:center;gap:1rem;padding:0.75rem 1rem;background:var(--card);border-radius:12px;border:1px solid var(--border);font-size:0.88rem;transition:border-color 0.3s,transform 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+  .info-item:hover{border-color:var(--accent);transform:translateX(6px)}
+  .info-icon{font-size:1.1rem;width:22px;text-align:center}
+  .info-label{color:var(--muted);font-size:0.78rem;width:90px;flex-shrink:0}
+  .info-val{color:var(--text);font-weight:500}
+
+  /* KEAHLIAN */
+  .skills-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem;flex-wrap:wrap;gap:1rem}
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.5rem}
+  .skill-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.75rem;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.4s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.4s}
+  .skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+  .skill-card:hover{border-color:var(--accent);transform:translateY(-5px);box-shadow:0 20px 60px rgba(108,99,255,0.15)}
+  .skill-card:hover::before{transform:scaleX(1)}
+  .skill-icon{font-size:2rem;margin-bottom:1rem}
+  .skill-name{font-family:'Bree Serif',serif;font-size:0.98rem;margin-bottom:0.5rem;line-height:1.3}
+  .skill-desc{color:var(--muted);font-size:0.82rem;line-height:1.6;margin-bottom:1.25rem}
+  .skill-bar-label{display:flex;justify-content:space-between;font-size:0.76rem;color:var(--muted);margin-bottom:0.4rem}
+  .skill-bar-track{height:4px;background:rgba(255,255,255,0.06);border-radius:100px;overflow:hidden}
+  .skill-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform-origin:left;transform:scaleX(0);transition:transform 1.4s cubic-bezier(0.4,0,0.2,1)}
+  .skill-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1rem}
+  .tag{padding:0.25rem 0.65rem;background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.2);border-radius:100px;font-size:0.7rem;color:var(--accent);font-weight:500}
+
+  /* SERTIFIKASI */
+  #sertifikasi{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:3rem}
+  .cert-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.75rem;display:flex;gap:1.25rem;align-items:flex-start;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.4s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.4s}
+  .cert-card::after{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(108,99,255,0.05),transparent);opacity:0;transition:opacity 0.3s}
+  .cert-card:hover{border-color:var(--accent);transform:translateY(-5px);box-shadow:0 20px 60px rgba(108,99,255,0.12)}
+  .cert-card:hover::after{opacity:1}
+  .cert-badge{width:52px;height:52px;flex-shrink:0;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 8px 20px rgba(108,99,255,0.3)}
+  .cert-info{flex:1}
+  .cert-name{font-family:'Bree Serif',serif;font-size:0.92rem;margin-bottom:0.3rem;line-height:1.3}
+  .cert-issuer{color:var(--muted);font-size:0.8rem;margin-bottom:0.6rem}
+  .cert-date{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.73rem;color:var(--accent3);background:rgba(67,233,123,0.08);border:1px solid rgba(67,233,123,0.2);padding:0.2rem 0.65rem;border-radius:100px}
+
+  /* SOSIAL */
+  .social-wrap{margin-top:3.5rem;display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center}
+  .social-card{flex:1;min-width:210px;max-width:290px;border-radius:24px;padding:2.5rem 1.8rem;text-align:center;position:relative;overflow:hidden;text-decoration:none;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.4s;border:1px solid transparent}
+  .social-card:hover{transform:translateY(-10px)}
+  .social-tiktok{background:linear-gradient(145deg,#010101,#161616);border-color:rgba(255,0,80,0.2);box-shadow:0 0 60px rgba(255,0,80,0.07)}
+  .social-tiktok:hover{box-shadow:0 24px 80px rgba(255,0,80,0.22);border-color:rgba(255,0,80,0.45)}
+  .social-ig{background:linear-gradient(145deg,#1a0a25,#1a1220);border-color:rgba(228,64,95,0.2);box-shadow:0 0 60px rgba(228,64,95,0.07)}
+  .social-ig:hover{box-shadow:0 24px 80px rgba(228,64,95,0.22);border-color:rgba(228,64,95,0.45)}
+  .social-linkedin{background:linear-gradient(145deg,#00001a,#001428);border-color:rgba(10,102,194,0.25);box-shadow:0 0 60px rgba(10,102,194,0.07)}
+  .social-linkedin:hover{box-shadow:0 24px 80px rgba(10,102,194,0.25);border-color:rgba(10,102,194,0.5)}
+  .social-gmail{background:linear-gradient(145deg,#1a0000,#200a0a);border-color:rgba(234,67,53,0.2);box-shadow:0 0 60px rgba(234,67,53,0.07)}
+  .social-gmail:hover{box-shadow:0 24px 80px rgba(234,67,53,0.22);border-color:rgba(234,67,53,0.45)}
+  .social-icon-wrap{width:68px;height:68px;border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem}
+  .tiktok-icon-bg{background:linear-gradient(135deg,#010101,#2a2a2a);border:1px solid rgba(255,255,255,0.1)}
+  .ig-icon-bg{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+  .linkedin-icon-bg{background:linear-gradient(135deg,#0a66c2,#004182)}
+  .gmail-icon-bg{background:linear-gradient(135deg,#ea4335,#c5221f)}
+  .social-platform{font-family:'Bree Serif',serif;font-size:1.25rem;margin-bottom:0.35rem;color:#fff}
+  .social-handle{font-size:0.78rem;color:rgba(255,255,255,0.5);margin-bottom:1.5rem;word-break:break-all}
+  .social-follow{display:inline-flex;align-items:center;gap:0.45rem;padding:0.65rem 1.6rem;border-radius:100px;font-size:0.82rem;font-weight:600;color:#fff;cursor:pointer;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+  .social-tiktok .social-follow{background:linear-gradient(135deg,#ff0050,#ff3370);box-shadow:0 8px 25px rgba(255,0,80,0.3)}
+  .social-tiktok .social-follow:hover{box-shadow:0 12px 35px rgba(255,0,80,0.55);transform:scale(1.07)}
+  .social-ig .social-follow{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);box-shadow:0 8px 25px rgba(228,64,95,0.3)}
+  .social-ig .social-follow:hover{box-shadow:0 12px 35px rgba(228,64,95,0.55);transform:scale(1.07)}
+  .social-linkedin .social-follow{background:linear-gradient(135deg,#0a66c2,#004182);box-shadow:0 8px 25px rgba(10,102,194,0.3)}
+  .social-linkedin .social-follow:hover{box-shadow:0 12px 35px rgba(10,102,194,0.55);transform:scale(1.07)}
+  .social-gmail .social-follow{background:linear-gradient(135deg,#ea4335,#c5221f);box-shadow:0 8px 25px rgba(234,67,53,0.3)}
+  .social-gmail .social-follow:hover{box-shadow:0 12px 35px rgba(234,67,53,0.55);transform:scale(1.07)}
+
+  footer{border-top:1px solid var(--border);padding:2.5rem 4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+  .footer-copy{color:var(--muted);font-size:0.83rem}
+  .footer-copy span{color:var(--accent);font-family:'Bree Serif',serif}
+  .footer-back{font-size:0.83rem;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:0.4rem;transition:color 0.3s}
+  .footer-back:hover{color:var(--accent)}
+
+  @media(max-width:768px){
+    nav{padding:1rem 1.5rem}
+    .nav-links{display:none}
+    .section-wrap{padding:5rem 1.5rem}
+    .about-grid{grid-template-columns:1fr;gap:3rem}
+    .about-avatar-wrap{order:-1}
+    footer{padding:2rem 1.5rem;flex-direction:column;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="nav-logo">RF<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#beranda">Beranda</a></li>
+    <li><a href="#data-diri">Tentang</a></li>
+    <li><a href="#keahlian">Keahlian</a></li>
+    <li><a href="#sertifikasi">Sertifikasi</a></li>
+    <li><a href="#prestasi">Prestasi</a></li>
+    <li><a href="#sosial">Sosial</a></li>
+  </ul>
+</nav>
+
+<!-- BERANDA -->
+<section id="beranda">
+  <div class="hero-bg">
+    <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag"><span class="dot"></span>Available for opportunities</div>
+    <h1 class="hero-name">
+      <span class="line-1">Rafi</span>
+      <span class="line-2">Fauzan</span>
+    </h1>
+    <p class="hero-sub">Siswa Teknik Komputer & Jaringan Telekomunikasi yang passionate di bidang AI, Machine Learning, dan Networking.</p>
+    <div class="hero-cta">
+      <a href="#data-diri" class="btn btn-primary">Lihat Profil ↓</a>
+      <a href="#sosial" class="btn btn-outline">Hubungi Saya</a>
+    </div>
+  </div>
+  <div class="scroll-ind"><div class="line"></div><span>Scroll</span></div>
+</section>
+
+<!-- DATA DIRI -->
+<section id="data-diri">
+  <div class="section-wrap">
+    <div class="section-label">Tentang Saya</div>
+    <div class="about-grid">
+      <div class="about-avatar-wrap reveal">
+        <div class="avatar-frame"><div class="avatar-inner">🧑‍💻</div></div>
+      </div>
+      <div class="about-details">
+        <div class="section-label">Data Diri</div>
+        <h2 class="section-title">Rafi Fauzan</h2>
+        <p class="section-desc">Siswa SMK aktif di bidang Teknik Komputer & Jaringan, AI, dan Machine Learning. Berpengalaman dalam organisasi, kompetisi teknologi, dan praktik kerja industri.</p>
+        <div class="info-list">
+          <div class="info-item reveal reveal-delay-1"><span class="info-icon">👤</span><span class="info-label">Nama</span><span class="info-val">Rafi Fauzan</span></div>
+          <div class="info-item reveal reveal-delay-1"><span class="info-icon">🎂</span><span class="info-label">Lahir</span><span class="info-val">19 Agustus 2007 (18 Tahun)</span></div>
+          <div class="info-item reveal reveal-delay-2"><span class="info-icon">📍</span><span class="info-label">Lokasi</span><span class="info-val">Kota Banjar, Jawa Barat</span></div>
+          <div class="info-item reveal reveal-delay-2"><span class="info-icon">🎓</span><span class="info-label">Bidang</span><span class="info-val">Teknik Komputer & Jaringan Telekomunikasi</span></div>
+          <div class="info-item reveal reveal-delay-3"><span class="info-icon">🏫</span><span class="info-label">Sekolah</span><span class="info-val">SMKN 2 Banjar</span></div>
+          <div class="info-item reveal reveal-delay-3"><span class="info-icon">📧</span><span class="info-label">Email</span><span class="info-val">rafifauzan2514@gmail.com</span></div>
+          <div class="info-item reveal reveal-delay-3"><span class="info-icon">💼</span><span class="info-label">Status</span><span class="info-val">Open to Work ✅</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEAHLIAN -->
+<section id="keahlian">
+  <div class="section-wrap">
+    <div class="skills-header">
+      <div><div class="section-label">Skills</div><h2 class="section-title">Keahlian</h2></div>
+      <p class="section-desc" style="max-width:300px;font-size:0.88rem;">Kompetensi di bidang AI, Networking, dan teknologi informasi.</p>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <div class="skill-icon">💬</div>
+        <div class="skill-name">Prompt Engineering untuk Software Developer</div>
+        <div class="skill-desc">Merancang prompt efektif untuk mengoptimalkan output model AI dalam pengembangan perangkat lunak.</div>
+        <div class="skill-bar-label"><span>Proficiency</span><span>85%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.85"></div></div>
+        <div class="skill-tags"><span class="tag">Prompt Design</span><span class="tag">LLM</span><span class="tag">Dicoding</span></div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-icon">☁️</div>
+        <div class="skill-name">Membangun Aplikasi Gen AI dengan Microsoft Azure</div>
+        <div class="skill-desc">Mengembangkan aplikasi Generative AI menggunakan Azure OpenAI dan ekosistem Microsoft Azure.</div>
+        <div class="skill-bar-label"><span>Proficiency</span><span>80%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.80"></div></div>
+        <div class="skill-tags"><span class="tag">Azure OpenAI</span><span class="tag">Gen AI</span><span class="tag">Dicoding</span></div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="skill-icon">🧩</div>
+        <div class="skill-name">Penerapan Data Science dengan Microsoft Fabric</div>
+        <div class="skill-desc">Alur kerja data science end-to-end menggunakan Microsoft Fabric dari data engineering hingga deployment.</div>
+        <div class="skill-bar-label"><span>Proficiency</span><span>78%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.78"></div></div>
+        <div class="skill-tags"><span class="tag">MS Fabric</span><span class="tag">Data Science</span><span class="tag">Dicoding</span></div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-icon">🤖</div>
+        <div class="skill-name">Machine Learning Engineering</div>
+        <div class="skill-desc">Membangun, melatih, dan men-deploy model machine learning untuk berbagai kasus nyata secara sistematis.</div>
+        <div class="skill-bar-label"><span>Proficiency</span><span>82%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.82"></div></div>
+        <div class="skill-tags"><span class="tag">Scikit-learn</span><span class="tag">Clustering</span><span class="tag">Dicoding</span></div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-icon">🧠</div>
+        <div class="skill-name">Dasar AI (Artificial Intelligence)</div>
+        <div class="skill-desc">Konsep fundamental kecerdasan buatan, algoritma, dan penerapannya sebagai fondasi pengembangan AI.</div>
+        <div class="skill-bar-label"><span>Proficiency</span><span>90%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.90"></div></div>
+        <div class="skill-tags"><span class="tag">AI Fundamentals</span><span class="tag">ML Concepts</span><span class="tag">Dicoding</span></div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="skill-icon">🌐</div>
+        <div class="skill-name">Jaringan Komputer & Network</div>
+        <div class="skill-desc">Memahami IP Address, DHCP, DNS, konsep OSI Layer & TCP/IP, serta troubleshooting jaringan dasar.</div>
+        <div class="skill-bar-label"><span>Proficiency</span><span>80%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.80"></div></div>
+        <div class="skill-tags"><span class="tag">IP Address</span><span class="tag">DHCP</span><span class="tag">DNS</span><span class="tag">OSI Layer</span><span class="tag">TCP/IP</span></div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔧</div>
+        <div class="skill-name">Konfigurasi MikroTik</div>
+        <div class="skill-desc">Konfigurasi dasar MikroTik untuk manajemen jaringan, routing, dan troubleshooting konektivitas lokal & internet.</div>
+        <div class="skill-bar-label"><span>Proficiency</span><span>75%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.75"></div></div>
+        <div class="skill-tags"><span class="tag">MikroTik</span><span class="tag">Routing</span><span class="tag">Networking</span></div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-icon">🖥️</div>
+        <div class="skill-name">Sistem Operasi & Hardware</div>
+        <div class="skill-desc">Instalasi & konfigurasi OS Windows dan Linux, pemahaman dasar hardware dan software komputer.</div>
+        <div class="skill-bar-label"><span>Proficiency</span><span>82%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.82"></div></div>
+        <div class="skill-tags"><span class="tag">Windows</span><span class="tag">Linux</span><span class="tag">Hardware</span></div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="skill-icon">📝</div>
+        <div class="skill-name">Microsoft Office</div>
+        <div class="skill-desc">Menggunakan Word, Excel, dan PowerPoint secara profesional — tersertifikasi BNSP bercap Garuda.</div>
+        <div class="skill-bar-label"><span>Proficiency</span><span>88%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="0.88"></div></div>
+        <div class="skill-tags"><span class="tag">Word</span><span class="tag">Excel</span><span class="tag">PowerPoint</span><span class="tag">🦅 BNSP</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SERTIFIKASI -->
+<section id="sertifikasi">
+  <div class="section-wrap">
+    <div class="section-label">Pencapaian</div>
+    <h2 class="section-title">Sertifikasi</h2>
+    <p class="section-desc">Sertifikat yang telah saya raih sebagai bukti kompetensi dan komitmen belajar.</p>
+    <div class="cert-grid">
+
+      <div class="cert-card reveal">
+        <div class="cert-badge">💬</div>
+        <div class="cert-info"><div class="cert-name">Prompt Engineering untuk Software Developer</div><div class="cert-issuer">Dicoding Indonesia</div><div class="cert-date">✅ Selesai</div></div>
+      </div>
+
+      <div class="cert-card reveal reveal-delay-1">
+        <div class="cert-badge">☁️</div>
+        <div class="cert-info"><div class="cert-name">Membangun Aplikasi Gen AI dengan Microsoft Azure</div><div class="cert-issuer">Dicoding Indonesia</div><div class="cert-date">✅ Selesai</div></div>
+      </div>
+
+      <div class="cert-card reveal reveal-delay-2">
+        <div class="cert-badge">🧩</div>
+        <div class="cert-info"><div class="cert-name">Penerapan Data Science dengan Microsoft Fabric</div><div class="cert-issuer">Dicoding Indonesia</div><div class="cert-date">✅ Selesai</div></div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-badge">🤖</div>
+        <div class="cert-info"><div class="cert-name">Machine Learning Engineering</div><div class="cert-issuer">Dicoding Indonesia</div><div class="cert-date">✅ Selesai</div></div>
+      </div>
+
+      <div class="cert-card reveal reveal-delay-1">
+        <div class="cert-badge">🧠</div>
+        <div class="cert-info"><div class="cert-name">Dasar AI (Artificial Intelligence)</div><div class="cert-issuer">Dicoding Indonesia</div><div class="cert-date">✅ Selesai</div></div>
+      </div>
+
+      <div class="cert-card reveal reveal-delay-2" style="border-color:rgba(255,210,0,0.25);">
+        <div class="cert-badge" style="background:linear-gradient(135deg,#e63946,#c1121f);">🦅</div>
+        <div class="cert-info">
+          <div class="cert-name">Sertifikat Kompetensi MikroTik</div>
+          <div class="cert-issuer">BNSP — Badan Nasional Sertifikasi Profesi</div>
+          <div class="cert-date" style="color:#ffd200;background:rgba(255,210,0,0.08);border-color:rgba(255,210,0,0.25);">🦅 Bercap Garuda BNSP</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRESTASI -->
+<section id="prestasi" style="background:var(--bg);">
+  <div class="section-wrap">
+    <div class="section-label">Pencapaian</div>
+    <h2 class="section-title">Prestasi & Pengalaman</h2>
+    <p class="section-desc">Perjalanan, pencapaian, dan tanggung jawab yang telah saya jalani.</p>
+    <div style="margin-top:3rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;">
+
+      <div class="cert-card reveal" style="border-color:rgba(67,233,123,0.2);">
+        <div class="cert-badge" style="background:linear-gradient(135deg,#43e97b,#38f9d7);">💼</div>
+        <div class="cert-info"><div class="cert-name">Praktik Kerja Lapangan</div><div class="cert-issuer">PT. Java Digital Nusantara, Bogor</div><div class="cert-date" style="color:var(--accent3);background:rgba(67,233,123,0.08);border-color:rgba(67,233,123,0.2);">📍 Pengalaman Industri</div></div>
+      </div>
+
+      <div class="cert-card reveal reveal-delay-1" style="border-color:rgba(255,215,0,0.2);">
+        <div class="cert-badge" style="background:linear-gradient(135deg,#f7971e,#ffd200);">🏆</div>
+        <div class="cert-info"><div class="cert-name">40 Besar TIK Tingkat Nasional</div><div class="cert-issuer">Kompetisi Teknologi Informasi & Komunikasi</div><div class="cert-date" style="color:#ffd200;background:rgba(255,210,0,0.08);border-color:rgba(255,210,0,0.2);">🇮🇩 Tingkat Nasional</div></div>
+      </div>
+
+      <div class="cert-card reveal reveal-delay-2" style="border-color:rgba(245,87,108,0.2);">
+        <div class="cert-badge" style="background:linear-gradient(135deg,#f093fb,#f5576c);">🥈</div>
+        <div class="cert-info"><div class="cert-name">Juara Harapan 2 TIK</div><div class="cert-issuer">Tingkat Provinsi Jawa Barat</div><div class="cert-date" style="color:#f5576c;background:rgba(245,87,108,0.08);border-color:rgba(245,87,108,0.2);">🏅 Provinsi Jawa Barat</div></div>
+      </div>
+
+      <div class="cert-card reveal" style="border-color:rgba(108,99,255,0.3);">
+        <div class="cert-badge" style="background:linear-gradient(135deg,#6c63ff,#a855f7);">🥇</div>
+        <div class="cert-info"><div class="cert-name">Juara 1 TIK Tingkat Kota Banjar</div><div class="cert-issuer">Kompetisi Teknologi Informasi & Komunikasi</div><div class="cert-date" style="color:var(--accent);background:rgba(108,99,255,0.08);border-color:rgba(108,99,255,0.2);">🥇 Juara Pertama</div></div>
+      </div>
+
+      <div class="cert-card reveal reveal-delay-1" style="border-color:rgba(67,233,123,0.2);">
+        <div class="cert-badge" style="background:linear-gradient(135deg,#43e97b,#4facfe);">⚜️</div>
+        <div class="cert-info"><div class="cert-name">Pradana / Ketua Pramuka</div><div class="cert-issuer">SMKN 2 Banjar</div><div class="cert-date" style="color:var(--accent3);background:rgba(67,233,123,0.08);border-color:rgba(67,233,123,0.2);">👑 Pemimpin Organisasi</div></div>
+      </div>
+
+      <div class="cert-card reveal reveal-delay-2" style="border-color:rgba(108,99,255,0.3);">
+        <div class="cert-badge" style="background:linear-gradient(135deg,#6c63ff,#ff6584);">💻</div>
+        <div class="cert-info"><div class="cert-name">Ketua Ekstrakurikuler IT.Club</div><div class="cert-issuer">SMKN 2 Banjar — 2025/2026</div><div class="cert-date" style="color:var(--accent);background:rgba(108,99,255,0.08);border-color:rgba(108,99,255,0.2);">🖥️ IT Club Leader</div></div>
+      </div>
+
+      <div class="cert-card reveal" style="border-color:rgba(255,165,0,0.25);">
+        <div class="cert-badge" style="background:linear-gradient(135deg,#ff6b35,#f7931e);">🎮</div>
+        <div class="cert-info">
+          <div class="cert-name">Global Game Jam — 2D Artist</div>
+          <div class="cert-issuer">Global Game Jam (GGJ) Worldwide Event</div>
+          <div class="cert-date" style="color:#f7931e;background:rgba(247,147,30,0.08);border-color:rgba(247,147,30,0.25);">🎨 2D Art Contributor</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SOSIAL MEDIA -->
+<section id="sosial" style="background:var(--surface);border-top:1px solid var(--border);">
+  <div class="section-wrap" style="text-align:center;">
+    <div class="section-label" style="justify-content:center;">Connect</div>
+    <h2 class="section-title">Sosial Media</h2>
+    <p class="section-desc" style="margin:0 auto 0.5rem;">Temukan dan hubungi saya melalui platform berikut.</p>
+    <div class="social-wrap">
+
+      <a href="https://www.tiktok.com/@bukanrafi19?_r=1&_t=ZS-95xiObtdGoX" target="_blank" class="social-card social-tiktok reveal">
+        <div class="social-icon-wrap tiktok-icon-bg">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.84 4.84 0 0 1-1-.07z"/></svg>
+        </div>
+        <div class="social-platform">TikTok</div>
+        <div class="social-handle">@bukanrafi19</div>
+        <div class="social-follow">Follow ➝</div>
+      </a>
+
+      <a href="https://www.instagram.com/rafi_fuzan?igsh=MXUydmFncnNpbW5mNQ==" target="_blank" class="social-card social-ig reveal reveal-delay-1">
+        <div class="social-icon-wrap ig-icon-bg">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        </div>
+        <div class="social-platform">Instagram</div>
+        <div class="social-handle">@rafi_fuzan</div>
+        <div class="social-follow">Follow ➝</div>
+      </a>
+
+      <a href="https://www.linkedin.com/in/rafi-fauzan-2266743a9/?skipRedirect=true" target="_blank" class="social-card social-linkedin reveal reveal-delay-2">
+        <div class="social-icon-wrap linkedin-icon-bg">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </div>
+        <div class="social-platform">LinkedIn</div>
+        <div class="social-handle">Rafi Fauzan</div>
+        <div class="social-follow">Connect ➝</div>
+      </a>
+
+      <a href="mailto:rafifauzan2514@gmail.com" class="social-card social-gmail reveal reveal-delay-3">
+        <div class="social-icon-wrap gmail-icon-bg">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="white"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.910 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+        </div>
+        <div class="social-platform">Gmail</div>
+        <div class="social-handle">rafifauzan2514@gmail.com</div>
+        <div class="social-follow">Kirim Email ➝</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2025 <span>Rafi Fauzan</span>. All rights reserved.</div>
+  <a href="#beranda" class="footer-back">↑ Kembali ke atas</a>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+  (function loop(){ rx+=(mx-rx)*0.1; ry+=(my-ry)*0.1; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+  document.querySelectorAll('a,button,.skill-card,.cert-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ cursor.style.transform='translate(-50%,-50%) scale(2.5)'; ring.style.width='60px'; ring.style.height='60px'; ring.style.borderColor='rgba(108,99,255,0.8)'; });
+    el.addEventListener('mouseleave',()=>{ cursor.style.transform='translate(-50%,-50%) scale(1)'; ring.style.width='40px'; ring.style.height='40px'; ring.style.borderColor='rgba(108,99,255,0.5)'; });
+  });
+
+  const revObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+  const barObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.querySelectorAll('.skill-bar-fill').forEach(b=>{ setTimeout(()=>{ b.style.transform=`scaleX(${b.dataset.width})`; },150); }); barObs.unobserve(e.target); } });
+  },{threshold:0.25});
+  document.querySelectorAll('.skill-card').forEach(c=>barObs.observe(c));
+
+  const secs = document.querySelectorAll('section[id]');
+  const nls  = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll',()=>{ let cur=''; secs.forEach(s=>{ if(window.scrollY>=s.offsetTop-220) cur=s.id; }); nls.forEach(a=>{ a.style.color=a.getAttribute('href')==='#'+cur?'var(--text)':''; }); });
+</script>
+</body>
+</html>
